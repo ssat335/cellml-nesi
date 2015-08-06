@@ -14,20 +14,14 @@ We are grateful to the Aotearoa Foundation for providing funds to develop this p
 
 ## Performance improvement (population: 100, 50 generations):
 
-Cores  Runtime, min
-
-1       70:00
-
-8       09:51
-
-16      05:26
-
-32      02:41
-
-64      01:32
-
-128	00:59
-
+|Cores|Runtime (mm:ss)|
+|------|-------------|
+|1|70:00|
+|8|09:51|
+|16|05:26|
+|32|02:41|
+|64|01:32|
+|128|00:59|
 
 ## Where to start?
 ### Required packages
