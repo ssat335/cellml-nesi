@@ -5,52 +5,14 @@ Performs fitting for mathematical models encoded in CellML (www.cellml.org), usi
 
 ## Contributors
 
-* Dr. Mike Cooling, Systems Biomedicine Group, University of Auckland (concepts, virtual experiments, general design, minor bug fixes).
-* Mr. Gene Soudlenkov, Computational Scientist, University of Auckland (initial implementation in NeSI, MPI code), 2013-2014.
-* Mr. David Shin, Research Assistant, University of Auckland (second iteration implementation, GA bugfixes), 2015.
+* Mike Cooling, Systems Biomedicine Group, University of Auckland (concepts, virtual experiments, general design, minor bug fixes).
+* Gene Soudlenkov, Computational Scientist, University of Auckland (initial implementation in NeSI, MPI code), 2013-2014.
+* David Shin, Research Assistant, University of Auckland (second iteration implementation, GA bugfixes), 2015.
 
 
 We are grateful to the Aotearoa Foundation for providing funds to develop this piece of scientific software.
 
-## Introduction
-
-Load distribution is based on the workitems list. The list is populated with the item which contain
-data to be computed and an opaque key, which is the context of the requestor. Once the list is fully
-populated, call to process runs through the list requesting compute done on the data by sending the 
-requests to the rest of the MPI ranks. Once the results are back, the observer function is called for
-each result passing the workitem and the result to the callback.
-
-Since CellML compiler relies on GCC compiler to build the code, LIBRARY_PATH and LD_LIBRARY_PATH 
-should be configured by pointing to CellML library directory.
-
-The example of Slurm job description file is given below (note the use of modules - the code in
-the example below was built with Intel compiler and Intel MPI)
-
-
-```
-#!/bin/bash
-#SBATCH -J CellML_Test
-#SBATCH -A uoa99999
-#SBATCH --time=00:30:00     # Walltime
-#SBATCH --ntasks=64
-#SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=4096  # memory/cpu (in MB)
-#SBATCH -o exper_cellml_%j.out		# OPTIONAL
-#SBATCH -e exper_cellml_%j.err		# OPTIONAL
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=user.email@auckland.ac.nz	# Email alerts
-#SBATCH -C sb
-######################################################
-
-module load intel/ics-2013
-
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/PATH/TO/YOUR/cellml-sdk/lib/
-export LIBRARY_PATH=$LIBRARY_PATH:/PATH/TO/YOUR/cellml-sdk/lib/
-
-srun PATH/TO/YOUR/experiment TEST_FILE [-v [...]]
-```
-
-Performance improvement (population: 100, 50 generations):
+## Performance improvement (population: 100, 50 generations):
 
 Cores  Runtime, min
 1       70:00
@@ -59,7 +21,6 @@ Cores  Runtime, min
 32      02:41
 64      01:32
 128	00:59
-
 
 ## Where to start?
 ### Required packages
@@ -178,3 +139,10 @@ Quickest way is by looking at an example: adapted from *short.xml* in IP3model p
         </VirtualExperiments>
 </CellMLTimeSeriesFit>
 ```
+## MPI Notes
+
+Load distribution is based on the workitems list. The list is populated with the item which contain
+data to be computed and an opaque key, which is the context of the requestor. Once the list is fully
+populated, call to process runs through the list requesting compute done on the data by sending the 
+requests to the rest of the MPI ranks. Once the results are back, the observer function is called for
+each result passing the workitem and the result to the callback.
