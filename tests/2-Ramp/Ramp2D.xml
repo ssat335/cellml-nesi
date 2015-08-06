@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
 <CellMLTimeSeriesFit>
-	<GA InitialPopulation="300" MaxPopulation="300" Generations="380" Mutation_proportion="0.3" Crossover_proportion="0.70">
+	<GA InitialPopulation="50" Generations="50" Mutation_proportion="0.3" Crossover_proportion="0.70" RNG="0">
 		<Alleles>
 			<Allele Name="x1" LowerBound="1.0" UpperBound="1e3"/>
 			<Allele Name="x2" LowerBound="1.0" UpperBound="1e3"/>
 		</Alleles>
 	</GA>
 	<VirtualExperiments>
-		<VirtualExperiment ModelFilePath="Ramp2D.cellml" ResultColumn="3">
-		<!-- note this VE doesn't have any Parameters to set, but next VE does (ie optional Parameters entity here) -->
+		<VirtualExperiment ModelFilePath="Ramp2D.cellml" Variable="objective" ReportStep="1">
 			<AssessmentPoints>
 				<AssessmentPoint time="2.0" target="6000" />
 			</AssessmentPoints>
