@@ -53,7 +53,7 @@ Configure *CELLML_PATH* to point directly to the **CellML-API** directory.
 
 Example:
 ```
-CELLML_PATH=/projects/uoa00322/mike.cooling/cellml-sdk
+CELLML_PATH=/projects/uoa00322/cellml-sdk
 ```
 
 ---
@@ -87,6 +87,22 @@ LIBRARY_PATH=$LIBRARY_PATH:/projects/uoa00322/cellml-sdk/lib/
 ```
 
 Finally, batch the slurm job file. As an example, running `sbatch short.sl` will batch the example test *short.xml* on a single processor.
+
+### Verbosity levels
+
+The verbosity of the output can be set by adding or removing "-v" from the "srun" command
+
+```
+srun ../../cellml-fitter test.xml -v -v
+```
+
+|Number of "-v"s|Output|
+|------|-------------|
+|0|Only the best overall population member is reported|
+|1|As 0 plus each generation's best is reported|
+|2|As 1 plus each generation's members are reported|
+|3|As 2 plus results of each genetic operator are reported|
+|4|As 3 plus detail of each genetic operator is reported|
 
 ---
 
@@ -137,6 +153,14 @@ Quickest way is by looking at an example: adapted from *short.xml* in IP3model p
         </VirtualExperiments>
 </CellMLTimeSeriesFit>
 ```
+
+### RNG and ReportStep attributes
+
+The GA node may have an RNG attribute set to "0" or "1". If it is not set or is any other value it defaults to "0". A "0" instructs the allele randomiser to select from a linear
+distribution, whereas "1" forces a logarithmic distribution.
+
+Each VirtualExperiment must have the ReportStep set. This is used by the simulator to force the integrator to report results at given time interval. If it is set to "0", it defaults to intervals of 1 time unit.
+
 ## MPI Notes
 
 Load distribution is based on the workitems list. The list is populated with the item which contain
