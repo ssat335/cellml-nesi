@@ -2,8 +2,8 @@ CC=mpiicpc
 
 # User-configuration
 ##############################################
-XMLPARSER_PATH=/PATH/TO/ADVXMLPARSER/DIRECTORY	# path to the AdvXMLParser directory
-CELLML_PATH=/PATH/TO/CELLML_API/DIRECTORY	# path to CellML API directory (cellml-sdk)
+XMLPARSER_PATH=/projects/uoa00322/AdvXMLParser
+CELLML_PATH=/projects/uoa00322/cellml-sdk
 ##############################################
 
 CFLAGS=-I $(XMLPARSER_PATH) -I $(CELLML_PATH)/include -O
@@ -13,10 +13,10 @@ SOURCES=experiment.cpp virtexp.cpp utils.cpp cellml_observer.cpp distributor.cpp
 INCLUDES=virtexp.h utils.h GAEngine.h GAEngine.cpp cellml_observer.h distributor.h
 
 
-all: experiment
+all: cellml-fitter
 
-experiment: $(SOURCES) $(INCLUDES)
-	$(CC) $(CFLAGS) $(SOURCES) -o experiment $(LFLAGS)
+cellml-fitter: $(SOURCES) $(INCLUDES)
+	$(CC) $(CFLAGS) $(SOURCES) -o cellml-fitter $(LFLAGS)
 
 clean:
-	rm -f experiment *~ *.o
+	rm -f cellml-fitter  *~ *.o

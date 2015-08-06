@@ -13,7 +13,7 @@
 module load intel/ics-2013 
 
 # User-configured paths
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:
-export LIBRARY_PATH=$LIBRARY_PATH:
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../cellml-sdk/lib/	
+export LIBRARY_PATH=$LIBRARY_PATH:../../../cellml-sdk/lib/
 
-srun ../../experiment short.xml -v -v 
+srun ../../cellml-fitter short.xml -v -v 
