@@ -46,7 +46,7 @@ Set *XMLPARSER_PATH* to point directly to the **AdvXMLParser** directory.
 
 Example:
 ```
-XMLPARSER_PATH=/projects/uoa00322/mike.cooling/AdvXMLParser
+XMLPARSER_PATH=/projects/uoa00322/AdvXMLParser
 ```
 
 Configure *CELLML_PATH* to point directly to the **CellML-API** directory.
@@ -63,7 +63,7 @@ Compile the project with the *makefile*:
 ```
 make
 ```
-which should generate the binary **experiment** in your current directory.
+which should generate the binary **cellml-fitter** in your current directory.
 
 ---
 
@@ -82,8 +82,8 @@ Feel free to look into the example test (XML) and job (Slurm) files.
 Before batching any job with the example Slurm files, make sure you configure the library paths. Since CellML compiler relies on GCC compiler to build the code, LIBRARY_PATH and LD_LIBRARY_PATH should be configured by pointing to CellML **library** directory. For example:
 
 ```
-LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/projects/uoa00322/mike.cooling/cellml-sdk/lib/
-LIBRARY_PATH=$LIBRARY_PATH:/projects/uoa00322/mike.cooling/cellml-sdk/lib/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/projects/uoa00322/cellml-sdk/lib/
+LIBRARY_PATH=$LIBRARY_PATH:/projects/uoa00322/cellml-sdk/lib/
 ```
 
 Finally, batch the slurm job file. As an example, running `sbatch short.sl` will batch the example test *short.xml* on a single processor.
