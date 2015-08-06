@@ -104,12 +104,6 @@ srun ../../cellml-fitter test.xml -v -v
 |3|As 2 plus results of each genetic operator are reported|
 |4|As 3 plus detail of each genetic operator is reported|
 
----
-
-**NOTE**: when submitting a job using MPI library to NeSI, you must import a suitable library e.g. **ictce/5.4.0**/**impi**/**intel/ics-2013** at the Slurm job. The exemplar job description above shows this.
-
----
-
 ## Creating your own 'Virtual Experiment'
 Quickest way is by looking at an example: adapted from *short.xml* in IP3model problem...
 ```xml
