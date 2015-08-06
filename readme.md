@@ -15,12 +15,19 @@ We are grateful to the Aotearoa Foundation for providing funds to develop this p
 ## Performance improvement (population: 100, 50 generations):
 
 Cores  Runtime, min
+
 1       70:00
+
 8       09:51
+
 16      05:26
+
 32      02:41
+
 64      01:32
+
 128	00:59
+
 
 ## Where to start?
 ### Required packages
@@ -67,7 +74,7 @@ which should generate the binary **experiment** in your current directory.
 ---
 
 ### Testing
-Test the program with some supplied problems in the *tests* sub-directory (No examples for 2D-Ramp model has been supplied):
+Test the program with some supplied problems in the *tests* sub-directory:
 
 Jump into any available test folder: 
 
@@ -78,17 +85,14 @@ cd tests/3-ip3model
 
 Feel free to look into the example test (XML) and job (Slurm) files.
 
-Before batching any job with the example Slurm files, make sure you configure the library paths!
-
-Since CellML compiler relies on GCC compiler to build the code, LIBRARY_PATH and LD_LIBRARY_PATH 
-should be configured by pointing to CellML **library** directory. For example:
+Before batching any job with the example Slurm files, make sure you configure the library paths. Since CellML compiler relies on GCC compiler to build the code, LIBRARY_PATH and LD_LIBRARY_PATH should be configured by pointing to CellML **library** directory. For example:
 
 ```
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/projects/uoa00322/mike.cooling/cellml-sdk/lib/
 LIBRARY_PATH=$LIBRARY_PATH:/projects/uoa00322/mike.cooling/cellml-sdk/lib/
 ```
 
-Finally, batch the slurm job file! As an example, running `sbatch short.sl` will batch the example test *short.xml* on a single processor.
+Finally, batch the slurm job file. As an example, running `sbatch short.sl` will batch the example test *short.xml* on a single processor.
 
 ---
 
