@@ -12,7 +12,7 @@ Performs fitting for mathematical models encoded in CellML (www.cellml.org), usi
 
 We are grateful to the Aotearoa Foundation for providing funds to develop this piece of scientific software.
 
-## Performance improvement (population: 100, 50 generations):
+## Performance improvement (population: 100, generations: 50):
 
 |Cores|Runtime (mm:ss)|
 |------|-------------|
@@ -23,7 +23,7 @@ We are grateful to the Aotearoa Foundation for providing funds to develop this p
 |64|01:32|
 |128|00:59|
 
-## Where to start?
+## Building
 ### Required packages
 #### Compiler
 * ***mpiicpc***: an Intel MPI C++ compiler to compile the codebase. Load onto Pan Cluster's *build node* by:
@@ -58,7 +58,7 @@ CELLML_PATH=/projects/uoa00322/mike.cooling/cellml-sdk
 
 ---
 
-### Ready to compile
+### Compiling
 Compile the project with the *makefile*:
 ```
 make
@@ -67,7 +67,7 @@ which should generate the binary **experiment** in your current directory.
 
 ---
 
-### Testing
+## Testing
 Test the program with some supplied problems in the *tests* sub-directory:
 
 Jump into any available test folder: 
