@@ -53,7 +53,13 @@ char *OpenXmlFile(const char *name,long& nSize)
 	//allocate memory to contain the whole file
     pBuffer=new char[nSize+1];
 
-    fread(pBuffer,nSize,1,f);	//copy the file into buffer (usage of fread)
+    size_t result = fread(pBuffer,nSize,1,f);	//copy the file into buffer (usage of fread)
+
+    // if result number differs from the count parameter, either a reading error occurred
+    // or the end-of-file was reached while reading.
+    if (result != 1) {
+    	return NULL;
+    }
     
 	pBuffer[nSize]=0;	// null terminate the char array buffer
     fclose(f);
@@ -299,7 +305,7 @@ int main(int argc,char *argv[])
             initialize_template_var(root("GA",0));
         }
     }
-    catch(ParsingException e)
+    catch(ParsingException &e)
     {
 		std::cerr << "Error: main: parsing error at line " << e.GetLine() << std::endl;
     }

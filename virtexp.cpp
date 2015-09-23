@@ -234,7 +234,7 @@ bool VirtualExperiment::LoadModel(const std::string& model_name)
         m_Model=bootstrap->modelLoader()->loadFromURL(modelURL); 
         res=true;
     }
-    catch(CellMLException e)
+    catch(CellMLException &e)
     {
 		std::cerr << "Error: VirtualExperiment::LoadModel: error loading model " << model_name << ": " << currentDateTime() << std::endl;
         res=false;
@@ -287,14 +287,18 @@ void VirtualExperiment::SetVariables(VariablesHolder& v)
             if(v.exists(fullname))
             {	// model optimisation paramter
                 char sss[120];	// buffer for parameter value 
-                gcvt(v(fullname),25,sss);	// convert the param value to char string
+                char* buf = gcvt(v(fullname),25,sss);	// convert the param value to char string
+                if (buf == 0)
+                	std::cerr << "gcvt failed";
                 std::wstring wv=convert(sss);
                 var->initialValue(wv);		// set this variable
             }
             else if(m_Parameters.find(fullname)!=m_Parameters.end())
             {	// experimental constant
                 char sss[120];
-                gcvt(m_Parameters[fullname],25,sss);
+                char* buf = gcvt(m_Parameters[fullname],25,sss);
+                if (buf == 0)
+                	std::cerr << "gcvt failed";
                 std::wstring wv=convert(sss);
                 var->initialValue(wv);
             }
