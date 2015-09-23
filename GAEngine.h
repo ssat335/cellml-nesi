@@ -153,10 +153,10 @@ class GAEngine
         LIMITS m_Limits;
 
 		// Print the genetic data of a member in population
-		void print_genome(int ind_genome);
+		void print_genome(POPULATION& population, int ind_genome);
 
 		// Print the genetic data of the current population
-		void print_population();
+		void print_population(POPULATION& population);
 
 		// Output a current summary of GA
 		// TODO different verbosity settings
@@ -170,7 +170,7 @@ class GAEngine
 
 		// Crossover operator
 		// swap allele-string before the crosspoint
-        bool cross(Genome& one,Genome& two,int crosspoint);
+        bool cross(Genome one,Genome two, Genome& one_o,Genome& two_o, int crosspoint);
 
 		// Append a defined number of randomly selected indices to genomes onto a vector
         void build_rnd_sample(std::vector<int>& sample,int count,bool reject_duplicates,bool check_valid);

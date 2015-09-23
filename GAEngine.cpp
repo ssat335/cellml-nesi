@@ -1,5 +1,6 @@
 #include "GAEngine.h"
 
+#include <set>
 
 bool reverse_compare(const Genome& v1,const Genome& v2) 
 {
@@ -291,7 +292,7 @@ void GAEngine<COMP>::RunGenerations(int gener)
 		{
 			printf("--------------------------------------------------------\n");
 			printf("Selected Population:\n");
-			print_population();
+			print_population(m_Population);
 			printf("--------------------------------------------------------\n");
 		}
 
@@ -299,11 +300,15 @@ void GAEngine<COMP>::RunGenerations(int gener)
 		// Caution: Multiple crossovers allowed in single generation iteration
 		if(m_crossPartition)
 		{
+			// Get a copy of the current population and work on it.
+			POPULATION current(m_Population);
 			// vector of genome indices selected for genetic operations
 			std::vector<int> sample;
 
 			// fill sample with unique and valid indices to genomes for performing crossover
 			build_rnd_sample_rnd(sample,m_CrossProbability*100.0,true);
+
+			std::set<int> XoverIndices;
 
 			for(int i=0;i<sample.size();i++)
 			{
@@ -311,7 +316,6 @@ void GAEngine<COMP>::RunGenerations(int gener)
 				arena.push_back(sample[i]);	// sampled genome enters arena 
 				//bulid tournament sample
 				build_rnd_sample(arena,1,true,true);	// a unique and valid genome enters arena for crossbreeding
-
 				// Genetic operator feedback
 				// Output genomes in arena pre-crossover
 				if(verbosity>3)
@@ -319,14 +323,15 @@ void GAEngine<COMP>::RunGenerations(int gener)
 					printf("CROSSOVER:\n");
 					for(int j=0;j<arena.size();j++)
 					{
+						XoverIndices.insert(arena[j]);
 						printf("-");
-						print_genome(arena[j]);
+						print_genome(m_Population, arena[j]);
 					}
 				}
 
 				// cross the genomes in arena before a randomly selected point
 				// multiple degree crossover in a single generation iteration possible (i.e. crossover processed genome may be tournament selected for additional crossover)
-				cross(m_Population[arena[0]],m_Population[arena[1]],
+				cross(m_Population[arena[0]],m_Population[arena[1]], current[arena[0]], current[arena[1]],
 					  (int)rnd_generate(1.0,m_Population[sample[i]].size()));
 
 				// Output genomes in arena post-crossover
@@ -335,30 +340,51 @@ void GAEngine<COMP>::RunGenerations(int gener)
 					for(int j=0;j<arena.size();j++)
 					{
 						printf("+");
-						print_genome(arena[j]);
+						print_genome(current, arena[j]);
 					}
 					printf("---------------------------------------\n");
-				}
+					printf("Population after %d iteration of crossover \n", i+1);
+					print_population(current);
 
-				for(int j=0;j<2;j++)
-				{
-					m_Population[arena[j]].var(v);	// store the Xover operated genome in template
-					Distributor::instance().remove_key(arena[j]);	// remove previously requested processing
-
-					// Set-up workitem for Xover'd genome job
-					WorkItem *w=var_to_workitem(v);
-					w->key=arena[j];
-					Distributor::instance().push(w);
 				}
-				// genomes weight-selected into population that did not undergo Xover do not need to be re-worked for fitness 
 			}
+			// Move the cross-over stage population as the current population
+			if(verbosity>3)
+			{
+				printf("--------------------------------------------------------\n");
+				printf("Population before cross-over population:\n");
+				print_population(m_Population);
+				printf("--------------------------------------------------------\n");
+			}
+			m_Population = current;
+
+			if(verbosity>3)
+			{
+				printf("--------------------------------------------------------\n");
+				printf("Population after cross-over population:\n");
+				print_population(m_Population);
+				printf("--------------------------------------------------------\n");
+			}
+
+			for(std::set<int>::iterator it = XoverIndices.begin(); it != XoverIndices.end(); ++it)
+			{
+				int index = *it;
+				m_Population[index].var(v);	// store the Xover operated genome in template
+				Distributor::instance().remove_key(index);	// remove previously requested processing
+
+				// Set-up workitem for Xover'd genome job
+				WorkItem *w=var_to_workitem(v);
+				w->key=index;
+				Distributor::instance().push(w);
+			}
+			// genomes weight-selected into population that did not undergo Xover do not need to be re-worked for fitness
 
 			// Print population after crossover
 			if(verbosity>2)
 			{
 				printf("--------------------------------------------------------\n");
 				printf("Crossover:\n");
-				print_population();
+				print_population(m_Population);
 				printf("--------------------------------------------------------\n");
 			}
 		}
@@ -388,7 +414,7 @@ void GAEngine<COMP>::RunGenerations(int gener)
 				{
 					printf("MUTATION:\n");
 					printf("-");
-					print_genome(sample[i]);
+					print_genome(m_Population, sample[i]);
 				}
 
 				// mutate the whole chromosome iff genome is invalid. else mutate allele based on mutation probaility
@@ -398,7 +424,7 @@ void GAEngine<COMP>::RunGenerations(int gener)
 				if(verbosity>3)
 				{
 					printf("+");
-					print_genome(sample[i]);
+					print_genome(m_Population,sample[i]);
 					printf("---------------------------------------\n");
 				}
 
@@ -415,7 +441,7 @@ void GAEngine<COMP>::RunGenerations(int gener)
 			{
 				printf("--------------------------------------------------------\n");
 				printf("Mutation:\n");
-				print_population();
+				print_population(m_Population);
 				printf("--------------------------------------------------------\n");
 			}
 		}
@@ -456,10 +482,10 @@ void GAEngine<COMP>::print_config(const int gener)
 }
 
 template<class COMP>
-void GAEngine<COMP>::print_genome(int ind_genome)
+void GAEngine<COMP>::print_genome(POPULATION& population, int ind_genome)
 {
 	VariablesHolder v;
-	m_Population[ind_genome].var(v);	// store alleles data in a temporary variable
+	population[ind_genome].var(v);	// store alleles data in a temporary variable
 	printf("[%d] ", ind_genome);		// print the genome's index
 
 	for(int i=0;;i++)
@@ -474,12 +500,12 @@ void GAEngine<COMP>::print_genome(int ind_genome)
 }
 
 template<class COMP>
-void GAEngine<COMP>::print_population()
+void GAEngine<COMP>::print_population(POPULATION& population)
 {
-	int popsize=m_Population.size();
+	int popsize=population.size();
 	for(int i=0;i<popsize;i++)
 	{
-		print_genome(i);
+		print_genome(population, i);
 	}
 }
 
@@ -498,7 +524,7 @@ void GAEngine<COMP>::print_stage(int g)
 			printf("%s[%d](%lf) ",(m_Population[j].valid()?(m_Population[j].fitness()<0?"!":" "):"*"),g,m_Population[j].fitness());
 
 			// Sequence the chromosome
-			print_genome(j);
+			print_genome(m_Population,j);
 		}
 		printf("--------------------------------------------------------\n");
 	}
@@ -516,7 +542,7 @@ void GAEngine<COMP>::print_stage(int g)
 		f=m_Population[0].fitness();
 
 		printf("Generation %d. Best fitness: %lf\n",g,f);
-		print_genome(0);
+		print_genome(m_Population, 0);
 		printf("--------------------------------------------------------\n");
 	}
 }
@@ -582,7 +608,7 @@ void GAEngine<COMP>::mutate(const std::wstring& name,Genome& g,bool mutate_all)
 }
 
 template<class COMP>
-bool GAEngine<COMP>::cross(Genome& one,Genome& two,int crosspoint)
+bool GAEngine<COMP>::cross(Genome one,Genome two, Genome& one_o, Genome& two_o, int crosspoint)
 {
 	Genome n1,n2;
 
@@ -604,8 +630,8 @@ bool GAEngine<COMP>::cross(Genome& one,Genome& two,int crosspoint)
 		n1[i]=one[i];
 	}
 
-	one=n1;
-	two=n2;
+	one_o=n1;
+	two_o=n2;
 
 	return true;
 }
