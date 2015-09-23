@@ -391,7 +391,8 @@ void GAEngine<COMP>::RunGenerations(int gener)
 					print_genome(sample[i]);
 				}
 
-				mutate(std::wstring(),m_Population[sample[i]],!(m_Population[sample[i]].valid()));	// mutate the whole chromosome iff genome is invalid. else mutate approx 1 allele
+				// mutate the whole chromosome iff genome is invalid. else mutate allele based on mutation probaility
+				mutate(std::wstring(),m_Population[sample[i]],!(m_Population[sample[i]].valid()));
 
 				// Output genomes post-mutation
 				if(verbosity>3)
@@ -523,16 +524,16 @@ void GAEngine<COMP>::print_stage(int g)
 template<class COMP>
 void GAEngine<COMP>::mutate(const std::wstring& name,Genome& g,bool mutate_all)
 {
-	double prob=(mutate_all?101.0:100.0/g.size());
+	// mutate everything or mutate alleles based on mutation probability
+	double prob=(mutate_all?101.0:m_MutationProbability * 100);
 
 	for(int i=0;i<g.size();i++)
 	{
 		double p=rnd_generate(0.0,100.0);
-
 		// mutate if p <= prob
-		if(p>prob)		// chance to skip mutation
+		if(p>prob) {		// chance to skip mutation
 			continue;
-
+		}
 		if(!name.size() || g.name(i)==name)
 		{
 			LIMITS::iterator it=m_Limits.find(g.name(i));	// check for param limits of this allele

@@ -249,7 +249,8 @@ int main(int argc,char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &proc);
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
 
-	srand(time(NULL)*proc);		// unique seed for RNG
+    // proc for unique seed for each processor, proc + 1 to overcome single processor 0 seed.
+	srand(time(NULL)* (proc + 1));		// unique seed for RNG
 
     //Load and initialise CellML API
     bootstrap=CreateCellMLBootstrap();
