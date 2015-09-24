@@ -250,7 +250,11 @@ int main(int argc,char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
 
     // proc for unique seed for each processor, proc + 1 to overcome single processor 0 seed.
-	srand(time(NULL)* (proc + 1));		// unique seed for RNG
+
+    double seed = time(NULL)* (proc + 1);
+	srand(1443039850);		// unique seed for RNG
+	cout.precision(15);
+	cout << "Seed value is " << seed << endl;
 
     //Load and initialise CellML API
     bootstrap=CreateCellMLBootstrap();

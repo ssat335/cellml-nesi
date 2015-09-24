@@ -342,10 +342,10 @@ void GAEngine<COMP>::RunGenerations(int gener)
 						printf("+");
 						print_genome(current, arena[j]);
 					}
-					printf("---------------------------------------\n");
+					printf("--------------------------------------------------------\n");
 					printf("Population after %d iteration of crossover \n", i+1);
 					print_population(current);
-
+					printf("--------------------------------------------------------\n");
 				}
 			}
 			// Move the cross-over stage population as the current population
