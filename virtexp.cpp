@@ -353,7 +353,8 @@ bool VirtualExperiment::isValid()
 	}
 	else
 	{
-		std::cerr << "Warning: VirtualExperiment::isValid: user has supplied 0.0 ReportStep: ODE solver will automatically determine steps and cannot guarantee accurate regression analysis: " << currentDateTime() << std::endl;;
+		if (getProcessRank() == 0)
+			std::cerr << "Warning: VirtualExperiment::isValid: user has supplied 0.0 ReportStep: ODE solver will automatically determine steps and cannot guarantee accurate regression analysis: " << currentDateTime() << std::endl;;
 	}
 
 	return true;

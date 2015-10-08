@@ -5,7 +5,6 @@
 
 #define MAX_DOUBLE std::numeric_limits<double>::max()
 
-
 std::string convert(const std::wstring& wstr);	// convert wstring to a char string with '_' as default char
 std::wstring convert(const std::string& str);	// convert string to a wstring
 
@@ -31,5 +30,7 @@ inline bool in_range(double point, double value, double eps)
 
 // Get current date/time: YYYY-MM-DD.HH:mm:ss
 const std::string currentDateTime();
+
+int getProcessRank();
 
 #endif

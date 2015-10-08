@@ -4,7 +4,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
-
+#include <mpi.h>
 
 using namespace std;
 
@@ -48,4 +48,10 @@ const std::string currentDateTime()
 	strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
 
 	return buf;
+}
+
+int getProcessRank() {
+	int rank;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	return rank;
 }
