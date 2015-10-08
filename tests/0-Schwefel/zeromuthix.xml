@@ -7,7 +7,7 @@
 		</Alleles>
 	</GA>
 	<VirtualExperiments>
-		<VirtualExperiment ModelFilePath="tests/0-Schwefel/Schwefel2D.cellml" Variable="objective" ReportStep="1">
+		<VirtualExperiment ModelFilePath="Schwefel2D.cellml" Variable="objective" ReportStep="1">
 			<AssessmentPoints>
 				<AssessmentPoint time="2" target="1.0" />
 			</AssessmentPoints>
