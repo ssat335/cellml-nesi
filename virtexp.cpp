@@ -470,7 +470,7 @@ double VirtualExperiment::Evaluate()
 		else
 			res=INFINITY;	// return INF if simulation failed
 	}
-    catch(CellMLException e)
+    catch(CellMLException& e)
     {
 		std::cerr << "Error: VirtualExperiment::Evaluate: error evaluating model: " << currentDateTime() << std::endl;
         res=INFINITY;

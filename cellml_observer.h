@@ -2,6 +2,7 @@
 //observer role for CellML API purposes
 #ifndef CELLML_OBSERVER_H
 #define CELLML_OBSERVER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

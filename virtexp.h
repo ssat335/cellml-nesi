@@ -1,5 +1,6 @@
 #ifndef VIRTUAL_EXPERIMENT_H
 #define VIRTUAL_EXPERIMENT_H
+
 #include <stddef.h>
 #include "cellml-api-cxx-support.hpp"
 #include "IfaceCellML_APISPEC.hxx"
