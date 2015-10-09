@@ -17,8 +17,6 @@ using namespace AdvXMLParser;
 using namespace iface::cellml_api;
 using namespace iface::cellml_services;
 
-#define ZERO_LIM 1e-10
-
 ObjRef<iface::cellml_api::CellMLBootstrap> bootstrap;	//CellML api bootstrap
 ObjRef<iface::cellml_services::CellMLIntegrationService> cis;
 
@@ -131,19 +129,13 @@ int SetAndInitEngine(GAEngine<COMP_FUNC >& ga, const Element& elem)
 			ga.RNG_method()=0;
 		}
 
-		// TODO do below iff log-type is appropriate
-		// reassign zero bounds to ZERO_LIM
-		if(min_lim==0.0)
+		// Check for allele equal to 0 for log-type RNG. This is to avoid log(0) = inf.
+		if((min_lim == 0.0) && (RNG_type==1))
 		{
-			std::cerr << "Error: SetAndInitEngine: 0.0 is an invalid LowerBound for Allele[" << i << "]: resetting to ZERO_LIM=" << ZERO_LIM << ": " << currentDateTime() << std::endl;
+			std::cerr << "Error: SetAndInitEngine: 0.0 is an invalid LowerBound for Log-type RNG method Allele[" << i << "]: resetting to ZERO_LIM=" << ZERO_LIM << ": " << currentDateTime() << std::endl;
 			min_lim=ZERO_LIM;
 		}
-		if(max_lim==0.0)
-		{
-			std::cerr << "Error: SetAndInitEngine: 0.0 is an invalid UpperBound for Allele[" << i << "]: resetting to ZERO_LIM=" << ZERO_LIM << ": " << currentDateTime() << std::endl;
-			max_lim=ZERO_LIM;
-		}
-		
+
         ga.AddLimit(name,min_lim,max_lim);
         var_template(name,0.0);		// update allele list in var_template
     }

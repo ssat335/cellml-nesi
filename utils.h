@@ -5,6 +5,8 @@
 
 #define MAX_DOUBLE std::numeric_limits<double>::max()
 
+#define ZERO_LIM 1e-10
+
 std::string convert(const std::wstring& wstr);	// convert wstring to a char string with '_' as default char
 std::wstring convert(const std::string& str);	// convert string to a wstring
 

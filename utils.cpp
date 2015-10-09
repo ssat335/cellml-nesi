@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <mpi.h>
+#include <assert.h>
+#include <cmath>
 
 using namespace std;
 
@@ -34,6 +36,8 @@ std::wstring convert(const std::string& str)
 
 double rnd_generate(double min, double max)
 {
+	// assert if either min or max are infinity values
+	assert(!(isnan(min) && isnan(max)));
     double r = (double)rand() / (double)RAND_MAX;
     return min + r * (max - min);
 }
