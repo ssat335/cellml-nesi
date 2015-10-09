@@ -1,12 +1,12 @@
-#include "utils.h"
+#include <mpi.h>
 #include <clocale>
 #include <locale>
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
-#include <mpi.h>
 #include <assert.h>
 #include <cmath>
+#include "utils.h"
 
 using namespace std;
 
