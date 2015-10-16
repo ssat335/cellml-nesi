@@ -42,6 +42,28 @@ double rnd_generate(double min, double max)
     return min + r * (max - min);
 }
 
+double getExponentMantissa(double val, int* exp)
+{
+   *exp = (val == 0) ? 0 : (int)(1 + std::log10(std::fabs(val) ) );
+   return val * pow((double)10 , -(*exp));
+}
+
+double rnd_logarithmic_generate(double min, double max)
+{
+	int exp_min = 0;
+	int exp_max = 0;
+
+	double mantissa_min = getExponentMantissa(min, &exp_min);
+	double mantissa_max = getExponentMantissa(max, &exp_max);
+
+	// Randomise exp and mantissa.
+    double r = (double)rand() / (double)RAND_MAX;
+    double exp_rnd =  exp_min + r * (exp_max - exp_min);
+    double mantissa_rnd = mantissa_min + r * (mantissa_max - mantissa_min);
+
+    // return the randomised value
+	return mantissa_rnd * pow(10, exp_rnd);
+}
 
 const std::string currentDateTime()
 {

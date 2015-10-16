@@ -13,6 +13,11 @@ std::wstring convert(const std::string& str);	// convert string to a wstring
 // generate a random double in [min,max]
 double rnd_generate(double min, double max);
 
+// get exponent and mantissa (returned)
+double getExponentMantissa(double arg, int * exp);
+
+// generate random double by randomising the mantissa and exponent
+double rnd_logarithmic_generate(double min, double max);
 
 // Evaluate equality of pair by comparing the first member
 template<class T,class S> struct pair_equal_to:std::binary_function<T,std::pair<T,S>,bool> {

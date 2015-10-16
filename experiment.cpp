@@ -129,13 +129,6 @@ int SetAndInitEngine(GAEngine<COMP_FUNC >& ga, const Element& elem)
 			ga.RNG_method()=0;
 		}
 
-		// Check for allele equal to 0 for log-type RNG. This is to avoid log(0) = inf.
-		if((min_lim == 0.0) && (RNG_type==1))
-		{
-			std::cerr << "Error: SetAndInitEngine: 0.0 is an invalid LowerBound for Log-type RNG method Allele[" << i << "]: resetting to ZERO_LIM=" << ZERO_LIM << ": " << currentDateTime() << std::endl;
-			min_lim=ZERO_LIM;
-		}
-
         ga.AddLimit(name,min_lim,max_lim);
         var_template(name,0.0);		// update allele list in var_template
     }

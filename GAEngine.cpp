@@ -171,51 +171,58 @@ void GAEngine<COMP>::RunGenerations(int gener)
 		}
 
 		// CROSSOVER
-		// Caution: Multiple crossovers allowed in single generation iteration
 		if(m_crossPartition)
 		{
-			// Get a copy of the current population and work on it.
-			POPULATION current(m_Population);
 			double prob = m_crossPartition * 10;
 
+			// Declare a set to store the populations available for crossover
+			std::set<int> pendingGenomes;
+
+			// Initialise the set with all the population indexes
+			for (int i = 0; i < m_Population.size(); ++i)
+			    pendingGenomes.insert(pendingGenomes.end(), i);
+
+			// Initialise a set to store the crossovered indices
 			std::set<int> xoverIndices;
-			xoverIndices.clear();
-			for(int i=0;i<m_Population.size();i++)
+
+			// perform cross over here until genomes are available for crossover
+			while(pendingGenomes.size() > 1)
 			{
-				for (int j = i+1; j < m_Population.size(); j++)
-				{
-					// Checks if any of the indices have been already crossovered. If crossovered, don't touch it.
-					if((xoverIndices.find(i) != xoverIndices.end()) || (xoverIndices.find(j) != xoverIndices.end()))
-						continue;
+				// pick 'top' member and remove from any future crossover
+				std::set<int>::iterator it = pendingGenomes.begin();
+				int index_mate1 = *it;
+				pendingGenomes.erase(it);
 
-					// cross the genomes in arena before a randomly selected point
-					// multiple degree crossover in a single generation iteration possible (i.e. crossover processed genome may be tournament selected for additional crossover)
-					double p=rnd_generate(0.0,100.0);
+				//  pick potential mate from remaining members randomly and remove from any future crossover
+				double  rnd_select = rnd_generate(0, pendingGenomes.size() - 1 );
+				it = pendingGenomes.begin();
+				std::advance(it, round(rnd_select));
+				int index_mate2 = *it;
+				pendingGenomes.erase(it);
 
-					// crossover the selected pair
-					if(p > prob) {		// chance to skip mutation
-						continue;
-					}
-
-					// the indices are saved before crossover, such that we next time these are ignored
-					xoverIndices.insert(i);
-					xoverIndices.insert(j);
+				// check the chance of crossover
+				double p=rnd_generate(0.0,100.0);
+				if(p < prob) {		// chance to skip crossover
 					if(verbosity>3)
 					{
 						printf("CROSSOVER:\n");
 						printf("-");
-						print_genome(m_Population, i);
+						print_genome(m_Population, index_mate1);
 						printf("-");
-						print_genome(m_Population, j);
+						print_genome(m_Population, index_mate2);
 					}
-					cross(m_Population[i],m_Population[j], (int)rnd_generate(1.0,m_Population[i].size()));
+
+					cross(m_Population[index_mate1],m_Population[index_mate2], (int)rnd_generate(1.0,m_Population[0].size()));
+
+					xoverIndices.insert(index_mate1);
+					xoverIndices.insert(index_mate2);
 
 					if(verbosity>3)
 					{
 						printf("+");
-						print_genome(m_Population, i);
+						print_genome(m_Population, index_mate1);
 						printf("+");
-						print_genome(m_Population, j);
+						print_genome(m_Population, index_mate2);
 					}
 				}
 			}
@@ -224,12 +231,7 @@ void GAEngine<COMP>::RunGenerations(int gener)
 			if(verbosity>3)
 			{
 				printf("--------------------------------------------------------\n");
-				printf("Population before cross-over population:\n");
-				print_population(current);
-				printf("--------------------------------------------------------\n");
-
-				printf("--------------------------------------------------------\n");
-				printf("Population after cross-over population:\n");
+				printf("Population after cross-over:\n");
 				print_population(m_Population);
 				printf("--------------------------------------------------------\n");
 			}
@@ -443,7 +445,7 @@ void GAEngine<COMP>::mutate(const std::wstring& name,Genome& g,bool mutate_all)
 				else
 				{
 					// restrict RNG to the logarithm of set limits (positive definite) and exponentiate to tranform to original scale
-					val=exp(rnd_generate(log(it->second.first),log(it->second.second)));
+					val=rnd_logarithmic_generate(it->second.first, it->second.second);
 				}
 			}
 
