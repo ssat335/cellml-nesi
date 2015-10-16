@@ -1,14 +1,14 @@
 #include <mpi.h>
-#include "cellml_observer.h"
-#include "distributor.h"
+#include "LocalProgressObserver.h"
+#include "Distributor.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "AdvXMLParser.h"
 #include "GAEngine.h"
 #include "GAEngine.cpp"
-#include "virtexp.h"
-#include "utils.h"
+#include "VirtualExperiment.h"
+#include "Utils.h"
 
 
 using namespace std;

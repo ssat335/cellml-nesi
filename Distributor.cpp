@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "distributor.h"
+#include "Distributor.h"
 
 using namespace std;
 

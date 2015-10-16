@@ -6,7 +6,7 @@
 #include <time.h>
 #include <assert.h>
 #include <cmath>
-#include "utils.h"
+#include "Utils.h"
 
 using namespace std;
 

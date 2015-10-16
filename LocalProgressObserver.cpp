@@ -1,4 +1,4 @@
-#include "cellml_observer.h"
+#include "LocalProgressObserver.h"
 
 
 LocalProgressObserver::LocalProgressObserver(iface::cellml_services::CellMLCompiledModel* aCCM):

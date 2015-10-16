@@ -5,9 +5,8 @@
  *      Author: ssat335
  */
 
-
 #include "Genome.h"
-
+#include "Utils.h"
 
 Genome::Genome():m_Fitness(0.0),m_Valid(true)
 {

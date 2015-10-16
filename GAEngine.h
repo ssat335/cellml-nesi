@@ -13,9 +13,9 @@
 #include <mpi.h>
 #endif
 #include <limits>
-#include "utils.h"
-#include "virtexp.h"
-#include "distributor.h"
+#include "Utils.h"
+#include "VirtualExperiment.h"
+#include "Distributor.h"
 #include <math.h>
 #include "Genome.h"
 

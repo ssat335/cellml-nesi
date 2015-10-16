@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <math.h>
-#include "virtexp.h"
+#include "VirtualExperiment.h"
 
 //Genome handler
 class Genome

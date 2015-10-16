@@ -12,7 +12,7 @@
 #include "CellMLBootstrap.hpp"
 #include "CISBootstrap.hpp"
 #include <string>
-#include "utils.h"
+#include "Utils.h"
 
 
 class LocalProgressObserver:public iface::cellml_services::IntegrationProgressObserver
