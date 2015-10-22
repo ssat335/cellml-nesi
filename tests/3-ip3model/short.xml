@@ -21,21 +21,6 @@
 				<AssessmentPoint time="10000.0" target="0.015490316" />
 			</AssessmentPoints>
 		</VirtualExperiment>
-		<VirtualExperiment ModelFilePath="ip3model.cellml" Variable="Ca" ReportStep="50.0">
-			<Parameters>
-				<Parameter ToSet="Ls" Value="5.0"/>
-			</Parameters>
-			<AssessmentPoints>
-				<AssessmentPoint time="100.0" target="0.1" />
-				<AssessmentPoint time="200.0" target="0.0957163" />
-				<AssessmentPoint time="400.0" target="0.09551297" />
-				<AssessmentPoint time="650.0" target="0.095987597" />
-				<AssessmentPoint time="1000.0" target="0.098171588" />
-				<AssessmentPoint time="5000.0" target="0.09932246" />
-				<AssessmentPoint time="7500.0" target="0.099750063" />
-				<AssessmentPoint time="10000.0" target="0.099907954" />
-			</AssessmentPoints>
-		</VirtualExperiment>
 	</VirtualExperiments>
 </CellMLTimeSeriesFit>
 
