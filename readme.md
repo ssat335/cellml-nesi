@@ -5,10 +5,10 @@ Performs fitting for mathematical models encoded in CellML (www.cellml.org), usi
 
 ## Contributors
 
-* Mike Cooling, Systems Biomedicine Group, University of Auckland (concepts, virtual experiments, general design, minor bug fixes).
-* Gene Soudlenkov, Computational Scientist, University of Auckland (initial implementation in NeSI, MPI code), 2013-2014.
+* Shameer Sathar, Research Assistant, University of Auckland (various bug fixes, refactoring), 2015.
 * David Shin, Research Assistant, University of Auckland (second iteration implementation, GA bugfixes), 2015.
-
+* Gene Soudlenkov, Computational Scientist, University of Auckland (initial implementation in NeSI, MPI code), 2013-2014.
+* Mike Cooling, Systems Biomedicine Group, University of Auckland (concepts, virtual experiments, general design, minor bug fixes, test cases).
 
 We are grateful to the Aotearoa Foundation for providing funds to develop this piece of scientific software.
 
