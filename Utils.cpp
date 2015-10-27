@@ -33,23 +33,60 @@ std::wstring convert(const std::string& str)
     return wstr;	// return the translated wstring
 }
 
-
-double rnd_generate(double min, double max)
-{
-	// assert if either min or max are infinity values
-	assert(!(isnan(min) && isnan(max)));
-    double r = (double)rand() / (double)RAND_MAX;
-    return min + r * (max - min);
-}
-
 double getExponentMantissa(double val, int* exp)
 {
    *exp = (val == 0) ? 0 : (int)(1 + std::log10(std::fabs(val) ) );
    return val * pow((double)10 , -(*exp));
 }
 
+double roundDigitPrecision (double mantissa) {
+	int val = mantissa * DIGIT_PRECISION; // int will round of the decimal values
+	return (double) val/DIGIT_PRECISION; // typecast back to double
+}
+
+bool isAlleleRange(double val) {
+
+	if (val < ALLELE_MIN || val > ALLELE_MAX) {
+		return false;
+	}
+	return true;
+}
+
+double rnd_generate(double min, double max)
+{
+	// check if either min or max are within the range
+	if (!isAlleleRange(min)) {
+		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value to ALLELE_MIN: "
+																		<< currentDateTime() << std::endl;
+		min = ALLELE_MIN;
+	}
+
+	if (!isAlleleRange(max)) {
+		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value ALLELE_MAX: "
+																		<< currentDateTime() << std::endl;
+		max = ALLELE_MAX;
+	}
+
+	double r = (double)rand() / (double)RAND_MAX;
+    int exp = 0;
+    double mantissa = getExponentMantissa((min + r * (max - min)), &exp);
+    return roundDigitPrecision(mantissa) * pow(10, exp);
+}
+
 double rnd_logarithmic_generate(double min, double max)
 {
+	if (!isAlleleRange(min)) {
+		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value to ALLELE_MIN: "
+																		<< currentDateTime() << std::endl;
+		min = ALLELE_MIN;
+	}
+
+	if (!isAlleleRange(max)) {
+		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value to  ALLELE_MAX:"
+																		<< currentDateTime() << std::endl;
+		max = ALLELE_MAX;
+	}
+
 	int exp_min = 0;
 	int exp_max = 0;
 
@@ -62,7 +99,7 @@ double rnd_logarithmic_generate(double min, double max)
     double mantissa_rnd = mantissa_min + r * (mantissa_max - mantissa_min);
 
     // return the randomised value
-	return mantissa_rnd * pow(10, exp_rnd);
+	return roundDigitPrecision(mantissa_rnd) * pow(10, exp_rnd);
 }
 
 const std::string currentDateTime()

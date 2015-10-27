@@ -326,7 +326,7 @@ void GAEngine<COMP>::print_config(const int gener)
 	// Allele list	
 	for(int i=0;i<m_AlleleList.size();i++)
 	{
-		printf("* %s: [%.3e,%.3e]\n",convert(m_AlleleList[i]).c_str(),m_Limits[m_AlleleList[i]].first,m_Limits[m_AlleleList[i]].second);
+		printf("* %s: [%.8e,%.8e]\n",convert(m_AlleleList[i]).c_str(),m_Limits[m_AlleleList[i]].first,m_Limits[m_AlleleList[i]].second);
 	}
 }
 
@@ -343,7 +343,7 @@ void GAEngine<COMP>::print_genome(POPULATION& population, int ind_genome)
 		// sequence all alleles in genome
 		if(name.empty())
 			break;
-		printf("%s=%.3e   ",convert(name).c_str(),v(name));
+		printf("%s=%.8e   ",convert(name).c_str(),v(name));
 	}
 	std::cout << std::endl;
 }

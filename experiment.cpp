@@ -278,6 +278,10 @@ int main(int argc,char *argv[])
             VEGroup::instance().add(vx);
         }
 		
+		// If no experiments is added to the VEGroup, exit the program
+		if (!VEGroup::instance().getExperimentCount())
+			return -1;
+
 		// load the GA parameters from file and initialise the engine
         if(!proc)
         {

@@ -261,8 +261,9 @@ bool VirtualExperiment::isValid()
 	}
 	else
 	{
+		m_ReportStep = 1; // Default it to 1 when it is set to 0.0
 		if (getProcessRank() == 0)
-			std::cerr << "Warning: VirtualExperiment::isValid: user has supplied 0.0 ReportStep: ODE solver will automatically determine steps and cannot guarantee accurate regression analysis: " << currentDateTime() << std::endl;;
+			std::cerr << "Warning: VirtualExperiment::isValid: user has supplied 0.0 ReportStep: The ReportStep is changed to 1. " << currentDateTime() << std::endl;;
 	}
 
 	return true;
@@ -456,6 +457,11 @@ double VEGroup::Evaluate(VariablesHolder& v)
 void VEGroup::add(VirtualExperiment *p)
 {
     experiments.push_back(p);
+}
+
+int VEGroup::getExperimentCount()
+{
+	return experiments.size();
 }
 
 void VEGroup::print_summary()

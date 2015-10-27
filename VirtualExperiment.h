@@ -116,6 +116,9 @@ class VEGroup
 		// Add a VE object onto experiments
 		void add(VirtualExperiment *p);
 
+		// Returns the number of VE objects.
+		int getExperimentCount();
+
 		// Print summary
 		void print_summary();
 

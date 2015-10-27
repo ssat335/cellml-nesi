@@ -4,17 +4,24 @@
 #include <limits>
 
 #define MAX_DOUBLE std::numeric_limits<double>::max()
-
-#define ZERO_LIM 1e-10
+#define DIGIT_PRECISION 10000
+#define ALLELE_MIN -10e12
+#define ALLELE_MAX 10e12
 
 std::string convert(const std::wstring& wstr);	// convert wstring to a char string with '_' as default char
 std::wstring convert(const std::string& str);	// convert string to a wstring
 
-// generate a random double in [min,max]
-double rnd_generate(double min, double max);
-
 // get exponent and mantissa (returned)
 double getExponentMantissa(double arg, int * exp);
+
+// round the value to required precision defined by DIGIT_PRECISION
+double roundDigitPrecision (double mantissa);
+
+// Check if the value is in range
+bool isAlleleRange(double val);
+
+// generate a random double in [min,max]
+double rnd_generate(double min, double max);
 
 // generate random double by randomising the mantissa and exponent
 double rnd_logarithmic_generate(double min, double max);
