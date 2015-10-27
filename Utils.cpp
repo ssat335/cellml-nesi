@@ -56,14 +56,10 @@ double rnd_generate(double min, double max)
 {
 	// check if either min or max are within the range
 	if (!isAlleleRange(min)) {
-		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value to ALLELE_MIN: "
-																		<< currentDateTime() << std::endl;
 		min = ALLELE_MIN;
 	}
 
 	if (!isAlleleRange(max)) {
-		std::cerr << "Error: main: invalid allele value for the Genetic Algorithm. Resetting the value ALLELE_MAX: "
-																		<< currentDateTime() << std::endl;
 		max = ALLELE_MAX;
 	}
 
