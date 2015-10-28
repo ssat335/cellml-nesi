@@ -87,7 +87,7 @@ double rnd_logarithmic_generate(double min, double max)
 
 	// Randomise exp and mantissa.
     double r = (double)rand() / (double)RAND_MAX;
-    double exp_rnd =  exp_min + r * (exp_max - exp_min);
+    int exp_rnd =  exp_min + r * (exp_max - exp_min);
     double mantissa_rnd = mantissa_min + r * (mantissa_max - mantissa_min);
 
     // return the randomised value
