@@ -162,3 +162,11 @@ data to be computed and an opaque key, which is the context of the requestor. On
 populated, call to process runs through the list requesting compute done on the data by sending the 
 requests to the rest of the MPI ranks. Once the results are back, the observer function is called for
 each result passing the workitem and the result to the callback.
+
+## Fitness of a Virtual Experiment Group
+
+Fitness evaluation currently treats every target data point as of equal importance. This will
+result in biasing the fits to those experiments with more data targets, unless each experiment
+has the same number of data targets. If this becomes a problem in practice, we could implement
+a simple weighing system to resolve it.
+experiments.
