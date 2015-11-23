@@ -48,6 +48,9 @@ class VirtualExperiment
 		// Get CellML model name
 		std::string model() const { return m_strModelName; }
 
+		// Get CellML model component name
+		std::string getmodelnamefromCellML();
+
 		// Get target variable name
 		std::string variable() const { return m_Variable; }
 		void variable(std::string name) { m_Variable=name; }

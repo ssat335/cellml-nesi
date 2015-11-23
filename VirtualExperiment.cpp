@@ -99,10 +99,14 @@ VirtualExperiment *VirtualExperiment::LoadExperiment(const AdvXMLParser::Element
             if(al.IsNull())
                 break;
 
-            wstring name=convert(al.GetAttribute("ToSet").GetValue());		// parameter to set as simulation constant
+            wstring name=convert(al.GetAttribute("ToSet").GetValue());// parameter to set as simulation constant
+
+            string compname = vx->getmodelnamefromCellML();
+            wstring fullname = convert(compname);
+            fullname = fullname + convert(".") + name;
             double val=atof(al.GetAttribute("Value").GetValue().c_str());	// value
             if(name.size())
-                vx->m_Parameters[name]=val;		// update simulation config
+                vx->m_Parameters[fullname]=val;		// update simulation config
         }
     }
     
@@ -119,7 +123,11 @@ double VirtualExperiment::getSSRD(std::vector<std::pair<int,double> >& d)
 		std::cerr << "Error: VirtualExperiment::getSSRD: estimation and data need to have the same size but are different: " << currentDateTime() << std::endl;
 		return INFINITY;
 	}
-	if(verbosity>2)
+
+	int rank = 0;
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+	if(verbosity>2 && (rank == 0))
 	{
 		printf("--------------------------------------------------------\n");
 		printf("Fitness Evaluation:\n");
@@ -128,14 +136,14 @@ double VirtualExperiment::getSSRD(std::vector<std::pair<int,double> >& d)
     {
 		double sim_data = d[i].second;		// model estimate for the ith data point
 		double exp_data = m_Timepoints[d[i].first].second;	// reference experimental data
-		if(verbosity>3)
+		if(verbosity>3 && (rank == 0))
 		{
 			cout << "Simulated" << "[" <<i<< "]: " << sim_data << "\n";
 			cout << "Experiment" << "[" <<i<< "]: " << exp_data << "\n";
 		}
 		// normalisation of residual is safe due to pre-solver check for zero targets
 		SSR+=pow(sim_data/exp_data-1.0,2);
-		if(verbosity>2)
+		if(verbosity>2 && (rank == 0))
 		{
 			cout << "SSR evaluated until point " << "[" <<i<< "]: " << SSR << "\n";
 
@@ -181,6 +189,15 @@ void VirtualExperiment::SetParameters(VariablesHolder& v)
     }
 }
 
+std::string VirtualExperiment::getmodelnamefromCellML()
+{
+    ObjRef<iface::cellml_api::CellMLComponentSet> comps=m_Model->modelComponents();
+    ObjRef<iface::cellml_api::CellMLComponentIterator> comps_it=comps->iterateComponents();
+    ObjRef<iface::cellml_api::CellMLComponent> firstComp=comps_it->nextComponent();
+
+    return convert(firstComp->name());
+}
+
 void VirtualExperiment::SetVariables(VariablesHolder& v)
 {
     ObjRef<iface::cellml_api::CellMLComponentSet> comps=m_Model->modelComponents();
@@ -200,7 +217,6 @@ void VirtualExperiment::SetVariables(VariablesHolder& v)
         while(var)
         {
             wstring name=var->name();	// get this variable's name
-
             // Find the full-name for the variable
 			wstring fullname=name;
             if(compname!="all" && compname!="")
@@ -208,7 +224,6 @@ void VirtualExperiment::SetVariables(VariablesHolder& v)
                 fullname=convert(compname)+convert(".");
                 fullname+=name;
             }
-
 			// Get model optimization parameter from v or experimental constants from m_Parameters
             if(v.exists(fullname))
             {	// model optimisation paramter
