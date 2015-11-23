@@ -101,12 +101,12 @@ VirtualExperiment *VirtualExperiment::LoadExperiment(const AdvXMLParser::Element
 
             wstring name=convert(al.GetAttribute("ToSet").GetValue());// parameter to set as simulation constant
 
-            string compname = vx->getmodelnamefromCellML();
-            wstring fullname = convert(compname);
-            fullname = fullname + convert(".") + name;
+//            string compname = vx->getmodelnamefromCellML();
+//            wstring fullname = convert(compname);
+//            fullname = fullname + convert(".") + name;
             double val=atof(al.GetAttribute("Value").GetValue().c_str());	// value
             if(name.size())
-                vx->m_Parameters[fullname]=val;		// update simulation config
+                vx->m_Parameters[name]=val;		// update simulation config
         }
     }
     
@@ -219,12 +219,23 @@ void VirtualExperiment::SetVariables(VariablesHolder& v)
             wstring name=var->name();	// get this variable's name
             // Find the full-name for the variable
 			wstring fullname=name;
-            if(compname!="all" && compname!="")
-            {
-                fullname=convert(compname)+convert(".");
-                fullname+=name;
-            }
+
+			/*************************************************************************************
+			// TODO Probably full name would be good idea if you have multiple cellml experiments.
+
+//            if(compname!="all" && compname!="")
+//            {
+//                fullname=convert(compname)+convert(".");
+//                fullname+=name;
+//            }
+            //wcout << "Parameter Name: " << fullname << endl;
 			// Get model optimization parameter from v or experimental constants from m_Parameters
+
+//            for (int i=0; i < v.size(); i++) {
+//            	wcout << " Name " << i << " :" <<v.name(i) << " Value: " << v(v.name(i)) << "\n";
+//            }
+
+			 ***********************************************************************************************/
             if(v.exists(fullname))
             {	// model optimisation paramter
                 char sss[120];	// buffer for parameter value 
