@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdlib.h>
+#include <mpi.h>
 #include "VirtualExperiment.h"
 #include "AdvXMLParser.h"
 #include "Utils.h"
@@ -262,7 +263,9 @@ bool VirtualExperiment::isValid()
 	else
 	{
 		m_ReportStep = 1; // Default it to 1 when it is set to 0.0
-		if (getProcessRank() == 0)
+		int rank = 0;
+		MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+		if (rank == 0)
 			std::cerr << "Warning: VirtualExperiment::isValid: user has supplied 0.0 ReportStep: The ReportStep is changed to 1. " << currentDateTime() << std::endl;;
 	}
 

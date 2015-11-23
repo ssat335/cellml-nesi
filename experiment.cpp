@@ -74,7 +74,6 @@ int SetAndInitEngine(GAEngine<COMP_FUNC >& ga, const Element& elem)
     double mutation=atof(elem.GetAttribute("Mutation_proportion").GetValue().c_str());
     double cross=atof(elem.GetAttribute("Crossover_proportion").GetValue().c_str());
     int generations=atoi(elem.GetAttribute("Generations").GetValue().c_str());
-    int RNG_type=atoi(elem.GetAttribute("RNG").GetValue().c_str());
 
     // Check for default and limit for params
     if(!initPopulation)
@@ -88,16 +87,11 @@ int SetAndInitEngine(GAEngine<COMP_FUNC >& ga, const Element& elem)
 		std::cerr << "Error: SetAndInitEngine: invalid value for Generations: setting to default 0" << std::endl;
 		generations=0;
 	}
-	if((RNG_type<0)||(RNG_type>1))
-	{
-		std::cerr << "Error: SetAndInitEngine: invalid value for RNG: setting to default linear-type RNG" << std::endl;
-		RNG_type=0;
-	}
+
     ga.prob_cross()=cross;
     ga.prob_mutate()=mutation;
     ga.part_cross()=(int)((double)initPopulation*cross);
     ga.part_mutate()=(int)((double)initPopulation*mutation);
-    ga.RNG_method()=RNG_type;
 
     // Read alleles information
     for(int i=0;;i++)
@@ -113,20 +107,12 @@ int SetAndInitEngine(GAEngine<COMP_FUNC >& ga, const Element& elem)
 		double min_lim=atof(al.GetAttribute("LowerBound").GetValue().c_str());
 		double max_lim=atof(al.GetAttribute("UpperBound").GetValue().c_str());
 		
-		if(min_lim>max_lim)
+		if(min_lim>max_lim || min_lim < 0)
 		{
-			std::cerr << "Error: SetAndInitEngine: invalid limits for Allele[" << i << "]: UpperBound should not be less than LowerBound: " << currentDateTime() << std::endl;
+			std::cerr << "Error: SetAndInitEngine: invalid limits for Allele[" << i
+					<< "]: UpperBound should not be less than LowerBound: Value cannot be negative as well."
+																		<< currentDateTime() << std::endl;
 			return -1;
-		}
-
-		// Check for negative allele range for log-type RNG
-		if((min_lim<0.0)&&(RNG_type==1))
-		{
-			std::cerr << "Error: SetAndInitEngine: Log-type RNG method does not support negative range: resetting RNG to linear-type (0): " << currentDateTime() << std::endl;
-			
-			// set RNG method to negative compatible linear-type
-			RNG_type=0;
-			ga.RNG_method()=0;
 		}
 
         ga.AddLimit(name,min_lim,max_lim);

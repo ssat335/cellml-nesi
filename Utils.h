@@ -4,9 +4,6 @@
 #include <limits>
 
 #define MAX_DOUBLE std::numeric_limits<double>::max()
-#define DIGIT_PRECISION 10000
-#define ALLELE_MIN -10e12
-#define ALLELE_MAX 10e12
 
 std::string convert(const std::wstring& wstr);	// convert wstring to a char string with '_' as default char
 std::wstring convert(const std::string& str);	// convert string to a wstring
@@ -22,9 +19,6 @@ bool isAlleleRange(double val);
 
 // generate a random double in [min,max]
 double rnd_generate(double min, double max);
-
-// generate random double by randomising the mantissa and exponent
-double rnd_logarithmic_generate(double min, double max);
 
 // Evaluate equality of pair by comparing the first member
 template<class T,class S> struct pair_equal_to:std::binary_function<T,std::pair<T,S>,bool> {
@@ -44,7 +38,5 @@ inline bool in_range(double point, double value, double eps)
 
 // Get current date/time: YYYY-MM-DD.HH:mm:ss
 const std::string currentDateTime();
-
-int getProcessRank();
 
 #endif

@@ -148,10 +148,7 @@ Quickest way is by looking at an example: adapted from *short.xml* in IP3model p
 </CellMLTimeSeriesFit>
 ```
 
-### RNG and ReportStep attributes
-
-The GA node may have an RNG attribute set to "0" or "1". If it is not set or is any other value it defaults to "0". A "0" instructs the allele randomiser to select from a linear
-distribution, whereas "1" forces a logarithmic distribution.
+### ReportStep attributes
 
 Each VirtualExperiment must have the ReportStep set. This is used by the simulator to force the integrator to report results at given time interval. If it is set to "0", it defaults to intervals of 1 time unit.
 

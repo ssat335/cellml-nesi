@@ -1,5 +1,6 @@
 #include "GAEngine.h"
 #include "Genome.h"
+#include "RandomValueGeneratorBoxConcept.h"
 #include <set>
 
 bool reverse_compare(const Genome& v1,const Genome& v2) 
@@ -12,8 +13,7 @@ template<class COMP>
 GAEngine<COMP>::GAEngine():m_MaxPopulation(0),m_Generations(1),
 					m_CrossProbability(0.2),m_MutationProbability(0.01),
 					m_bBestFitnessAssigned(false),
-					m_crossPartition(0),m_mutatePartition(0),
-					m_RNG(0)
+					m_crossPartition(0),m_mutatePartition(0)
 {
 }
 
@@ -321,7 +321,7 @@ template<class COMP>
 void GAEngine<COMP>::print_config(const int gener)
 {
 	printf("Genetic Algorithm:\n");
-	printf("Generations=%d  Population=%d  MutationRate=%lf  CrossoverRate=%lf  RNG=%d\n",gener,m_MaxPopulation,m_MutationProbability,m_CrossProbability,m_RNG);
+	printf("Generations=%d  Population=%d  MutationRate=%lf  CrossoverRate=%lf ",gener,m_MaxPopulation,m_MutationProbability,m_CrossProbability);
 		
 	// Allele list	
 	for(int i=0;i<m_AlleleList.size();i++)
@@ -415,38 +415,17 @@ void GAEngine<COMP>::mutate(const std::wstring& name,Genome& g,bool mutate_all)
 			LIMITS::iterator it=m_Limits.find(g.name(i));	// check for param limits of this allele
 			double val;
 
-			// Selection of RNG implementation
-			if(m_RNG==0)
+			if(it==m_Limits.end())
 			{
-				// Default linear RNG
-				if(it==m_Limits.end())
-				{
-					// no limits, just use [-RAND_MAX/2,RAND_MAX/2] as a limit
-					val=rnd_generate(-RAND_MAX*0.5,RAND_MAX*0.5);
-				}
-				else
-				{
-					// restrict RNG to set limits
-					val=rnd_generate(it->second.first,it->second.second);
-				}
+				// no limits, just use [0,RAND_MAX] as a limit
+				RandomValueGeneratorBoxConcept generator(0,RAND_MAX);
+				val = generator.getRandomValue();
 			}
-			else if(m_RNG==1)
+			else
 			{
-				// Log-type RNG
-				if(it==m_Limits.end())
-				{
-					// DEBUG
-					std::cerr << "DEBUG: log-type RNG ERROR" << std::endl;
-
-					// TODO find a method for no-limit case
-					// no limits, just use [-RAND_MAX/2,RAND_MAX/2] as a limit
-					val=rnd_generate(-RAND_MAX*0.5,RAND_MAX*0.5);
-				}
-				else
-				{
-					// restrict RNG to the logarithm of set limits (positive definite) and exponentiate to tranform to original scale
-					val=rnd_logarithmic_generate(it->second.first, it->second.second);
-				}
+				// restrict RNG to set limits.
+				RandomValueGeneratorBoxConcept generator(it->second.first,it->second.second);
+				val = generator.getRandomValue();
 			}
 
 			g.allele(i,val);	// set the RNG value to allele

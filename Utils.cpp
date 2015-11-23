@@ -1,4 +1,3 @@
-#include <mpi.h>
 #include <clocale>
 #include <locale>
 #include <vector>
@@ -33,65 +32,10 @@ std::wstring convert(const std::string& str)
     return wstr;	// return the translated wstring
 }
 
-double getExponentMantissa(double val, int* exp)
-{
-   *exp = (val == 0) ? 0 : (int)(1 + std::log10(std::fabs(val) ) );
-   return val * pow((double)10 , -(*exp));
-}
-
-double roundDigitPrecision (double mantissa) {
-	int val = mantissa * DIGIT_PRECISION; // int will round of the decimal values
-	return (double) val/DIGIT_PRECISION; // typecast back to double
-}
-
-bool isAlleleRange(double val) {
-
-	if (val < ALLELE_MIN || val > ALLELE_MAX) {
-		return false;
-	}
-	return true;
-}
-
 double rnd_generate(double min, double max)
 {
-	// check if either min or max are within the range
-	if (!isAlleleRange(min)) {
-		min = ALLELE_MIN;
-	}
-
-	if (!isAlleleRange(max)) {
-		max = ALLELE_MAX;
-	}
-
 	double r = (double)rand() / (double)RAND_MAX;
-    int exp = 0;
-    double mantissa = getExponentMantissa((min + r * (max - min)), &exp);
-    return roundDigitPrecision(mantissa) * pow(10, exp);
-}
-
-double rnd_logarithmic_generate(double min, double max)
-{
-	if (!isAlleleRange(min)) {
-		min = ALLELE_MIN;
-	}
-
-	if (!isAlleleRange(max)) {
-		max = ALLELE_MAX;
-	}
-
-	int exp_min = 0;
-	int exp_max = 0;
-
-	double mantissa_min = getExponentMantissa(min, &exp_min);
-	double mantissa_max = getExponentMantissa(max, &exp_max);
-
-	// Randomise exp and mantissa.
-    double r = (double)rand() / (double)RAND_MAX;
-    int exp_rnd =  exp_min + r * (exp_max - exp_min);
-    double mantissa_rnd = mantissa_min + r * (mantissa_max - mantissa_min);
-
-    // return the randomised value
-	return roundDigitPrecision(mantissa_rnd) * pow(10, exp_rnd);
+	return min + r * (max - min);
 }
 
 const std::string currentDateTime()
@@ -105,8 +49,4 @@ const std::string currentDateTime()
 	return buf;
 }
 
-int getProcessRank() {
-	int rank;
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	return rank;
-}
+
