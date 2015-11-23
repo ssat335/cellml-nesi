@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<CellMLTimeSeriesFit>
+	<GA InitialPopulation="100" Generations="200" Mutation_proportion="0.4" Crossover_proportion="0.60" RNG="1">
+		<Alleles>
+			<Allele Name="k_f1" LowerBound="0" UpperBound="100"/>
+			<Allele Name="k_f2" LowerBound="0" UpperBound="6"/>
+			<Allele Name="k_f3" LowerBound="0" UpperBound="10"/>			
+		</Alleles>
+	</GA>
+	<VirtualExperiments>
+		<VirtualExperiment ModelFilePath="mini.cellml" Variable="P" ReportStep="100.0">
+			<Parameters>
+				<Parameter ToSet="A" Value="100.0"/>
+				<Parameter ToSet="B" Value="300.0"/>
+				<Parameter ToSet="E" Value="15.0"/>
+			</Parameters>
+			<AssessmentPoints>
+				<AssessmentPoint time="100.0" target="2.23" />
+				<AssessmentPoint time="200.0" target="4.45" />
+				<AssessmentPoint time="400.0" target="8.90" />
+				<AssessmentPoint time="600.0" target="13.4" />
+				<AssessmentPoint time="800.0" target="17.8" />
+				<AssessmentPoint time="1000.0" target="22.2" />
+				<AssessmentPoint time="1500.0" target="33.2" />
+				<AssessmentPoint time="2000.0" target="44.1" />
+				<AssessmentPoint time="2800.0" target="60.9" />
+				<AssessmentPoint time="3600.0" target="66.8" />
+			</AssessmentPoints>
+		</VirtualExperiment>
+	</VirtualExperiments>
+</CellMLTimeSeriesFit>
+

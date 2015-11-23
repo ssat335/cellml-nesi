@@ -1,0 +1,139 @@
+<?xml version='1.0'?>
+<model name="mikes_mini_model" xmlns="http://www.cellml.org/cellml/1.0#" xmlns:cellml="http://www.cellml.org/cellml/1.0#">
+    <units name="uM">
+        <unit prefix="micro" units="mole"/>
+        <unit exponent="-1" units="litre"/>
+    </units>
+    <units name="per_second">
+        <unit exponent="-1" units="second"/>
+    </units>
+    <units name="per_uM_per_second">
+        <unit exponent="-1" units="uM"/>
+        <unit exponent="-1" units="second"/>
+    </units>
+    <units name="uM_per_second">
+        <unit units="uM"/>
+        <unit exponent="-1" units="second"/>
+    </units>
+    <component name="mini_model">
+        <variable name="t" units="second"/>
+        <variable initial_value="10" name="A" units="uM"/>
+        <variable initial_value="40" name="B" units="uM"/>
+        <variable initial_value="0" name="C" units="uM"/>
+        <variable initial_value="5" name="E" units="uM"/>
+        <variable initial_value="0" name="P" units="uM"/>
+        <variable name="J1" units="uM_per_second"/>
+        <variable initial_value="0.003" name="k_f1" units="per_uM_per_second"/>
+        <variable initial_value="0.00045" name="k_r1" units="per_second"/>
+        <variable name="J2" units="uM_per_second"/>
+        <variable initial_value="0.00025" name="k_f2" units="per_uM_per_second"/>
+        <variable name="J3" units="uM_per_second"/>
+        <variable initial_value="0.0015" name="k_f3" units="uM_per_second"/>
+        <variable initial_value="1" name="K3" units="uM"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>J1</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>k_f1</ci>
+                        <ci>A</ci>
+                        <ci>B</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>k_r1</ci>
+                        <ci>C</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J2</ci>
+                <apply>
+                    <times/>
+                    <ci>k_f2</ci>
+                    <ci>C</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J3</ci>
+                <apply>
+                    <divide/>
+                    <apply>
+                        <times/>
+                        <ci>k_f3</ci>
+                        <ci>C</ci>
+                        <ci>E</ci>
+                    </apply>
+                    <apply>
+                        <plus/>
+                        <ci>K3</ci>
+                        <ci>C</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>A</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J1</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>B</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J1</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>C</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <minus/>
+                        <ci>J1</ci>
+                        <ci>J2</ci>
+                    </apply>
+                    <ci>J3</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>t</ci>
+                    </bvar>
+                    <ci>P</ci>
+                </apply>
+                <ci>J3</ci>
+            </apply>
+        </math>
+    </component>
+</model>
