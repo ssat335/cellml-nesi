@@ -60,8 +60,13 @@ char *OpenXmlFile(const char *name,long& nSize)
     }
     
 	pBuffer[nSize]=0;	// null terminate the char array buffer
-	printf("Input file: %s \n", name);
-	printf("%s", pBuffer);
+	int proc;
+	MPI_Comm_rank(MPI_COMM_WORLD, &proc);
+	if(!proc)
+	{
+		printf("Input file: %s \n", name);
+		printf("%s", pBuffer);
+	}
     fclose(f);
 
     return pBuffer;
