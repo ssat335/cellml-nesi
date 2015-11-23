@@ -13,6 +13,7 @@
 #include <functional>
 #include <algorithm>
 
+extern int verbosity;
 // DEBUG macro
 //#define DEBUG_BUILD
 

@@ -60,6 +60,8 @@ char *OpenXmlFile(const char *name,long& nSize)
     }
     
 	pBuffer[nSize]=0;	// null terminate the char array buffer
+	printf("Input file: %s \n", name);
+	printf("%s", pBuffer);
     fclose(f);
 
     return pBuffer;

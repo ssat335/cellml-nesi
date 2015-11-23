@@ -119,15 +119,32 @@ double VirtualExperiment::getSSRD(std::vector<std::pair<int,double> >& d)
 		std::cerr << "Error: VirtualExperiment::getSSRD: estimation and data need to have the same size but are different: " << currentDateTime() << std::endl;
 		return INFINITY;
 	}
-
+	if(verbosity>2)
+	{
+		printf("--------------------------------------------------------\n");
+		printf("Fitness Evaluation:\n");
+	}
     for(int i=0;i<d.size();i++)
     {
 		double sim_data = d[i].second;		// model estimate for the ith data point
 		double exp_data = m_Timepoints[d[i].first].second;	// reference experimental data
-
+		if(verbosity>3)
+		{
+			cout << "Simulated" << "[" <<i<< "]: " << sim_data << "\n";
+			cout << "Experiment" << "[" <<i<< "]: " << exp_data << "\n";
+		}
 		// normalisation of residual is safe due to pre-solver check for zero targets
 		SSR+=pow(sim_data/exp_data-1.0,2);
+		if(verbosity>2)
+		{
+			cout << "SSR evaluated until point " << "[" <<i<< "]: " << SSR << "\n";
+
+		}
     }
+	if(verbosity>2)
+	{
+		printf("--------------------------------------------------------\n");
+	}
     return SSR;
 }
 
@@ -381,7 +398,9 @@ double VirtualExperiment::Evaluate()
 			res=((results.size()==m_Timepoints.size())?getSSRD(results):INFINITY);
 		}
 		else
+		{
 			res=INFINITY;	// return INF if simulation failed
+		}
 	}
     catch(CellMLException& e)
     {
