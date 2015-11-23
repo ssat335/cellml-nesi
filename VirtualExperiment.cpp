@@ -1,6 +1,6 @@
+#include <mpi.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <mpi.h>
 #include "VirtualExperiment.h"
 #include "AdvXMLParser.h"
 #include "Utils.h"
