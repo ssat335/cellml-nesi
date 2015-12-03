@@ -101,8 +101,8 @@ srun ../../cellml-fitter test.xml -v -v
 |0|Only the best overall population member is reported|
 |1|As 0 plus each generation's best is reported|
 |2|As 1 plus each generation's members are reported|
-|3|As 2 plus results of each genetic operator are reported|
-|4|As 3 plus detail of each genetic operator is reported|
+|3|As 2 plus results of each genetic operator are reported and fitness evaluation by target point|
+|4|As 3 plus detail of each genetic operator is reported, and detail of each target point evaluation|
 
 ## Creating your own 'Virtual Experiment'
 Quickest way is by looking at an example: adapted from *short.xml* in IP3model problem...
