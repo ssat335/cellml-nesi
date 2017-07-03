@@ -1,4 +1,4 @@
-# cellml-nesi-fitter project
+# cellml-nesi project
 
 ## Summary
 Performs fitting for mathematical models encoded in CellML (www.cellml.org), using the NeSI (www.nesi.org.nz) infrastructure.
