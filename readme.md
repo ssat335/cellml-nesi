@@ -5,7 +5,7 @@ Performs fitting for mathematical models encoded in CellML (www.cellml.org), usi
 
 ## Contributors
 
-* Shameer Sathar, Research Assistant, University of Auckland (various bug fixes, refactoring), 2015.
+* Shameer Sathar, Research Assistant, University of Auckland (Implementation, refactoring, owner), 2015.
 * Mike Cooling, Systems Biomedicine Group, University of Auckland (concepts, virtual experiments, general design, minor bug fixes, test cases).
 
 We are grateful to the Aotearoa Foundation for providing funds to develop this piece of scientific software.
